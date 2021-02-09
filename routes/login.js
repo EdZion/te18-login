@@ -16,8 +16,9 @@ router.post('/', function(req, res, next) {
 
   if (password == "abc123"){
     res.send('Hemligt');
+    
   } else{
-    res.redirect('/login');
+    res.render('login', {title :'Schoolsoft', error :'FEL!'});
   }
 });
 
