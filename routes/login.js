@@ -1,5 +1,7 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const bcrypt = require('bcrypt');
+const { query } = require('../models/db');
 
 /* GET Login */
 router.get('/', function(req, res, next) {
@@ -22,5 +24,18 @@ router.post('/', function(req, res, next) {
     res.render('login', {title :'Schoolsoft', error :'FEL!'});
   }
 });
+/*  GET skapa en hash */
+router.get('/kryptan/:pwd', function(req, res, next) {
+  const myPlaintextPassword = req.params.pwd;
+
+  bcrypt.hash(myPlaintextPassword, 10, function(err, hash) {
+    res.json({
+      pwd: hash
+    });
+    // Store hash in your password DB.
+  });
+
+});
+
 
 module.exports = router;
