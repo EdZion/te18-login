@@ -69,8 +69,10 @@ describe('/home', () => {
         });
     });
 
-    it('should return message on rendering', () => {
+    it('should redirect unauthorzed user to /login', () => {
       request.get('/home')
+        .expect(302)
+        .expect('location','/login')
         .end((err, res) => {
           if (err) throw err;
           expect(res.text).to.contain('Please login to view this page!');
