@@ -1,19 +1,19 @@
 extends layout 
 
 block content 
-  h1= title 
-  p Welcome to #{title}
+  main.container.d-flex.justify-content-center.align-items-center.h-100.w-100.flex-column  
+    form.form-signin(action="/login", method="post")
+      .mb-3.m
+        label.form-label.visually-hidden(for='username') Username:
+        input#username.form-control(placeholder="Username", type='text', name="username", value=username ? 
+        username : '',class=errors ? 'is-invalid' : '')
+        if errors
+          .invalid-feedback Username or password is invalid
+      .mb-3
+        label.form-label.visually-hidden(for='password') Password:
+        input#password.form-control(placeholder="Password",type='password', name="password" class=errors ?
+        'is-invalid' : '')
+        if errors 
+         .invalid-feedback Username or password is invalid
 
-  if error
-    each error in errors 
-      p= error.params
-      p = error.msg
-    
-  form(action="/login", method="post")
-    .mb-3.m
-      label.form-label(for='username') Username
-      input#username.form-control(type='text', name="username")
-    .mb-3
-      label.form-label(for='password') Password
-      input#password.form-control(type='password', name="password")
-    button.btn.btn-primary(type='submit', name='submit') Login
+      button.w-100.btn.btn-primary(type='submit', name='submit') Sign in 
