@@ -10,7 +10,7 @@ module.exports.destroy = async function(req, res, next)  {
   req.session.loggedin = false;
   req.session.destroy();
   return res.redirect('/login')  
-  };  
+  };
 
 
 
@@ -35,11 +35,11 @@ module.exports.store = async function(req, res, next) {
           req.session.username = username;
           res.redirect('/home');
         } else {
-          res.render('login',{ errors: 'Wrong username or password!'});
+          res.render('login',{ errors: 'Username or password is invalid'});
         }
       });
     } else {
-      res.render('login',{ errors: 'Wrong username or password!'});
+      res.render('login',{ errors: 'Username or password is invalid'});
     }
   } catch (e) {
     next(e);
