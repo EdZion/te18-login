@@ -9,7 +9,7 @@ module.exports.show = async function(req, res, next)  {
 module.exports.destroy = async function(req, res, next)  {
   req.session.loggedin = false;
   req.session.destroy();
-  return res.redirect('/login')  
+  return res.redirect('/login', { title: 'Schoolsoft'});
   };
 
 
