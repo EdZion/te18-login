@@ -9,10 +9,8 @@ module.exports.show = async function(req, res, next)  {
 module.exports.destroy = async function(req, res, next)  {
   req.session.loggedin = false;
   req.session.destroy();
-  return res.redirect('/login', { title: 'Schoolsoft'});
+  return res.redirect('/login');
   };
-
-
 
 module.exports.store = async function(req, res, next) {
   // Finds the validation errors in this request and wraps them in an object with handy functions

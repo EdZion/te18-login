@@ -19,8 +19,6 @@ router.get('/kryptan/:pwd', function(req, res, next) {
       pwd: hash
     });
   });
-
-
 });
 
 /* POST login */

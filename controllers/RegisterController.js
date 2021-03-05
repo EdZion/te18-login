@@ -10,30 +10,37 @@ module.exports.show = async function(req, res, next) {
 };
 
 module.exports.store = async function(req, res, next) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      console.log(errors.array());
-      return res.status(400).render('register', { errors: errors.array() });
-    }
-    const username = req.body.username;
-    const email = req.body.email;
-    const password = req.body.password;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log(errors.array());
+    return res.status(400).render('register', { errors: errors.array() });
+  }
+  const username = req.body.username;
+  const email = req.body.email;
+  const password = req.body.password;
 
-    bcrypt.hash(password, 10, async function (err, hash) {
-      if (err) throw err;
-      try {
-        const sql = 'INSERT INTO users (name, email, password, created_at, updated_at) VALUES (?, now(), now())';
-        const result = await query(sql, [username, email, hash]);
+  bcrypt.hash(password, 10, async function (err, hash) {
+    if (err) throw err;
+    try {
+      const sql = 'INSERT INTO users (name, email, password, created_at, updated_at) VALUES (?, now(), now())';
+      const result = await query(sql, [username, email, hash]);
 
-        if (result.insertId > 0) {
-          res.render('login', {username: username});
-        }
-
-      } catch (e) {
-        next(e);
-        console.error(e);
+      if (result.insertId > 0) {
+        res.render('login', {username: username});
       }
-    });
+
+    } catch (e) {
+      console.table(e);
+      if (e.errno === 1062) {
+        return res.render('register', {
+          username: e.sqlMessage.includes('users.name') ? 'Username already in use' : null,
+          email: e.sqlMessage.includes('users.email') ? 'Email already in use' : null,
+        });
+      } else {
+        next(e);
+      }
+    }
+  });
 };
 
 module.exports.destroy = async function(req, res, next) {
